@@ -1,7 +1,7 @@
 {
-    "name": "@gilles-coudert/pure-xxx",
+    "name": "@gilles-coudert/pure-architecture-entities",
     "version": "0.0.1",
-    "description": "A TypeScript library XXX.",
+    "description": "A TypeScript library for pure architecture entities.",
     "private": false,
     "publishConfig": {
         "access": "public"
@@ -17,20 +17,20 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/GillesCoudert/PureXXX.git"
+        "url": "git+https://github.com/GillesCoudert/PureArchitecture-Entities.git"
     },
     "keywords": [
         "PureFramework",
-        "PureXXX",
+        "PureArchitecture",
         "Error Handling",
         "Observability"
     ],
     "author": "Gilles Coudert <pure.framework@gmail.com>",
     "license": "MPL-2.0",
     "bugs": {
-        "url": "https://github.com/GillesCoudert/PureXXX/issues"
+        "url": "https://github.com/GillesCoudert/PureArchitecture-Entities/issues"
     },
-    "homepage": "https://github.com/GillesCoudert/PureXXX#readme",
+    "homepage": "https://github.com/GillesCoudert/PureArchitecture-Entities#readme",
     "devDependencies": {
         "@eslint/js": "^9.39.2",
         "@tsconfig/node24": "^24.0.4",
@@ -51,6 +51,7 @@
         "typescript-eslint": "^8.53.1"
     },
     "dependencies": {
+        "@gilles-coudert/pure-architecture": "^1.1.0",
         "zod": "^4.3.5"
     }
 }
