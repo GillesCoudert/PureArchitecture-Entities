@@ -1,0 +1,21 @@
+import {
+    type Requester,
+    type PureParameters,
+} from '@gilles-coudert/pure-architecture';
+
+/**
+ * Input parameters for deleting an entity.
+ * Exposed to the presentation layer with configurable TId.
+ *
+ * @template TRequester - The requester/actor type for access control
+ * @template TId - The entity ID type (defaults to string)
+ */
+export interface DeleteInput<
+    TRequester extends Requester,
+    TId = string,
+> extends PureParameters<TRequester> {
+    /**
+     * The entity ID to delete
+     */
+    id: TId;
+}
