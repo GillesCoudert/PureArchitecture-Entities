@@ -1,6 +1,6 @@
 {
     "name": "@gilles-coudert/pure-architecture-entities",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A TypeScript library for pure architecture entities.",
     "private": false,
     "publishConfig": {
