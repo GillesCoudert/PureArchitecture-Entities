@@ -12,15 +12,13 @@ import type { ImmutableEntity } from '../../domain/immutable_entity';
  *
  * @template TRequester - The type of the requester (user/system making the request)
  * @template TEntity - The immutable entity type (must extend ImmutableEntity)
- * @template TAccessPolicy - The type of access control policy applied to this entity
  * @template TId - The type of the entity identifier (defaults to string)
  *
  * @extends {Repository<TRequester, TEntity, TId>}
  */
 export interface ImmutableEntityRepository<
     TRequester extends Requester,
-    TEntity extends ImmutableEntity<TAccessPolicy, TId>,
-    TAccessPolicy = undefined,
+    TEntity extends ImmutableEntity<TId>,
     TId = string,
 > extends Repository<TRequester, TEntity, TId> {
     // Explicitly forbid update on immutable entities

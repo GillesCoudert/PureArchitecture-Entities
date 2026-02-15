@@ -13,7 +13,7 @@ This library provides TypeScript interfaces for building domain entities in Pure
 - **UpdatableEntity**: Entities that can be updated after creation
 - **SoftRemovableEntity**: Entities supporting soft deletion
 
-All entities support generic access control policies and custom identifier types.
+All entities support custom identifier types.
 
 ## Installation
 
@@ -31,19 +31,19 @@ import {
 } from '@gilles-coudert/pure-architecture-entities';
 
 // Define an immutable entity
-interface User extends ImmutableEntity<UserAccessPolicy, string> {
+interface User extends ImmutableEntity<string> {
     email: string;
     username: string;
 }
 
 // Define an updatable entity
-interface Article extends UpdatableEntity<ArticleAccessPolicy, string> {
+interface Article extends UpdatableEntity<string> {
     title: string;
     content: string;
 }
 
 // Define a soft-removable entity
-interface Post extends SoftRemovableEntity<PostAccessPolicy, number> {
+interface Post extends SoftRemovableEntity<number> {
     title: string;
     body: string;
 }
@@ -56,33 +56,27 @@ interface Post extends SoftRemovableEntity<PostAccessPolicy, number> {
 Base interface for entities that cannot be modified after creation.
 
 ```typescript
-interface ImmutableEntity<TAccessPolicy = undefined, TId = string> {
+interface ImmutableEntity<TId = string> {
     id: TId;
     createdAt: Date;
-    accessPolicy: TAccessPolicy;
 }
 ```
 
 **Type Parameters:**
 
-- `TAccessPolicy`: The type of access control policy (defaults to `undefined`)
 - `TId`: The type of the entity identifier (defaults to `string`)
 
 **Properties:**
 
 - `id`: Unique identifier for the entity
 - `createdAt`: Timestamp when the entity was created
-- `accessPolicy`: Access control policy for this entity
 
 ### UpdatableEntity
 
 Interface for entities that can be updated after creation. Extends `ImmutableEntity`.
 
 ```typescript
-interface UpdatableEntity<
-    TAccessPolicy = undefined,
-    TId = string,
-> extends ImmutableEntity<TAccessPolicy, TId> {
+interface UpdatableEntity<TId = string> extends ImmutableEntity<TId> {
     updatedAt: Date;
 }
 ```
@@ -93,13 +87,10 @@ interface UpdatableEntity<
 
 ### SoftRemovableEntity
 
-Interface for entities that support soft deletion. Extends `UpdatableEntity`.
+Interface for entities that support soft deletion. Extends `ImmutableEntity`.
 
 ```typescript
-interface SoftRemovableEntity<
-    TAccessPolicy = undefined,
-    TId = string,
-> extends UpdatableEntity<TAccessPolicy, TId> {
+interface SoftRemovableEntity<TId = string> extends ImmutableEntity<TId> {
     removedAt: Date;
 }
 ```
@@ -133,10 +124,18 @@ const product: Product = {
 
 ### Entity with Custom ID Type
 
+```tname: 'Widget',
+    price: 29.99,
+    sku: 'WID-001',
+};
+```
+
+### Entity with Custom ID Type
+
 ```typescript
 import { UpdatableEntity } from '@gilles-coudert/pure-architecture-entities';
 
-interface Order extends UpdatableEntity<undefined, number> {
+interface Order extends UpdatableEntity<number> {
     customerId: number;
     items: OrderItem[];
     total: number;
@@ -146,24 +145,18 @@ const order: Order = {
     id: 12345,
     createdAt: new Date(),
     updatedAt: new Date(),
-    accessPolicy: undefined,
     customerId: 67890,
     items: [],
     total: 0,
 };
 ```
 
-### Entity with Access Policy
+### Soft-Removable Entity
 
-```typescript
+````typescript
 import { SoftRemovableEntity } from '@gilles-coudert/pure-architecture-entities';
 
-interface AccessPolicy {
-    userId: string;
-    permissions: string[];
-}
-
-interface Document extends SoftRemovableEntity<AccessPolicy, string> {
+interface Document extends SoftRemovableEntity<string> {
     title: string;
     content: string;
 }
@@ -171,21 +164,7 @@ interface Document extends SoftRemovableEntity<AccessPolicy, string> {
 const document: Document = {
     id: 'doc-456',
     createdAt: new Date(),
-    updatedAt: new Date(),
-    removedAt: new Date(),
-    accessPolicy: {
-        userId: 'user-789',
-        permissions: ['read', 'write'],
-    },
-    title: 'My Document',
-    content: 'Document content...',
-};
-```
-
-## Development
-
-### Prerequisites
-
+    removedAt: new Date()
 - Node.js 24 or higher
 - npm or yarn
 
@@ -201,7 +180,7 @@ npm install
 
 # Build the project
 npm run build
-```
+````
 
 ### Scripts
 
