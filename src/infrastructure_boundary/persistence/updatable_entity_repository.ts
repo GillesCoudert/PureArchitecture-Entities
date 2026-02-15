@@ -11,15 +11,13 @@ import type { UpdatableEntity } from '../../domain/updatable_entity';
  *
  * @template TRequester - The type of the requester (user/system making the request)
  * @template TEntity - The updatable entity type (must extend UpdatableEntity)
- * @template TAccessPolicy - The type of access control policy applied to this entity
  * @template TId - The type of the entity identifier (defaults to string)
  *
  * @extends {Repository<TRequester, TEntity, TId>}
  */
 export interface UpdatableEntityRepository<
     TRequester extends Requester,
-    TEntity extends UpdatableEntity<TAccessPolicy, TId>,
-    TAccessPolicy = undefined,
+    TEntity extends UpdatableEntity<TId>,
     TId = string,
 > extends Omit<Repository<TRequester, TEntity, TId>, 'update'> {
     /**

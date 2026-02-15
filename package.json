@@ -1,7 +1,7 @@
 {
     "name": "@gilles-coudert/pure-architecture-entities",
     "version": "1.0.1",
-    "description": "A TypeScript library for pure architecture entities.",
+    "description": "This library provides TypeScript interfaces for building domain entities in Pure Architecture applications. It includes base entity types (immutable, updatable, soft removable) and corresponding repository interfaces, designed to work seamlessly with the Pure Framework and Pure Trace libraries for error handling and observability.",
     "private": false,
     "publishConfig": {
         "access": "public"

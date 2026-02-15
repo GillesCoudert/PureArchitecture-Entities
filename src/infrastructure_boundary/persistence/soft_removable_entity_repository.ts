@@ -11,32 +11,30 @@ import type { SoftRemovableEntity } from '../../domain/soft_removable_entity';
  *
  * @template TRequester - The type of the requester (user/system making the request)
  * @template TEntity - The soft removable entity type (must extend SoftRemovableEntity)
- * @template TAccessPolicy - The type of access control policy applied to this entity
  * @template TId - The type of the entity identifier (defaults to string)
  *
  * @extends {Repository<TRequester, TEntity, TId>}
  */
 export interface SoftRemovableEntityRepository<
     TRequester extends Requester,
-    TEntity extends SoftRemovableEntity<TAccessPolicy, TId>,
-    TAccessPolicy = undefined,
+    TEntity extends SoftRemovableEntity<TId>,
     TId = string,
 > extends Omit<
     Repository<TRequester, TEntity, TId>,
     'update' | 'softDelete' | 'restore'
 > {
     /**
-     * Updates an existing entity 
+     * Updates an existing entity
      */
     update: Required<Repository<TRequester, TEntity, TId>>['update'];
 
     /**
-     * Soft deletes an entity by marking it as removed 
+     * Soft deletes an entity by marking it as removed
      */
     softDelete: Required<Repository<TRequester, TEntity, TId>>['softDelete'];
 
     /**
-     * Restores a soft deleted entity 
+     * Restores a soft deleted entity
      */
     restore: Required<Repository<TRequester, TEntity, TId>>['restore'];
 }
