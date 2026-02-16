@@ -1,3 +1,5 @@
+import type { Entity } from '@gilles-coudert/pure-architecture';
+
 /**
  * Base interface for immutable entities in a Pure Architecture domain.
  * Immutable entities cannot be modified after creation.
@@ -7,12 +9,7 @@
  * @property {TId} id - Unique identifier for the entity
  * @property {Date} createdAt - Timestamp when the entity was created
  */
-export interface ImmutableEntity<TId = string> {
-    /**
-     * Unique identifier for the entity
-     */
-    id: TId;
-
+export interface ImmutableEntity<TId = string> extends Entity<TId> {
     /**
      * Timestamp when the entity was created
      */
