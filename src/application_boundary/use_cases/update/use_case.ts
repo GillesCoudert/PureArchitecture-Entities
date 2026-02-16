@@ -1,5 +1,4 @@
-import type { Requester } from '@gilles-coudert/pure-architecture';
-import type { ResultAsync } from '@gilles-coudert/pure-trace';
+import type { Requester, PureUseCase } from '@gilles-coudert/pure-architecture';
 import type { UpdateInput } from './input';
 
 /**
@@ -10,16 +9,13 @@ import type { UpdateInput } from './input';
  * @template TDto - The data transfer object type
  * @template TId - The entity ID type (defaults to string)
  */
-export interface UpdateUseCase<
+export type UpdateUseCase<
     TRequester extends Requester,
     TInputData,
-    TDto,
+    TUseCaseOutput,
     TId = string,
-> {
-    /**
-     * Execute the use case: update an existing entity and return it as a DTO.
-     * @param input - Command parameters containing requester, entity ID, and updated data
-     * @returns The updated entity as a DTO
-     */
-    execute(input: UpdateInput<TRequester, TInputData, TId>): ResultAsync<TDto>;
-}
+> = PureUseCase<
+    UpdateInput<TRequester, TInputData, TId>,
+    TUseCaseOutput,
+    TRequester
+>;

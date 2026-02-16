@@ -1,5 +1,4 @@
 import type { PureUseCase, Requester } from '@gilles-coudert/pure-architecture';
-import type { ResultAsync } from '@gilles-coudert/pure-trace';
 import type { FindByIdInput } from './input';
 
 /**
@@ -10,15 +9,8 @@ import type { FindByIdInput } from './input';
  * @template TDto - The data transfer object type
  * @template TId - The entity ID type (defaults to string)
  */
-export interface FindByIdUseCase<
+export type FindByIdUseCase<
     TRequester extends Requester,
-    TDto,
+    TUseCaseOutput,
     TId = string,
-> extends PureUseCase<TRequester, TDto> {
-    /**
-     * Execute the use case: find an entity by its ID and return it as a DTO.
-     * @param input - Query parameters containing requester and entity ID
-     * @returns The entity as a DTO, or null if not found
-     */
-    execute(input: FindByIdInput<TRequester, TId>): ResultAsync<TDto>;
-}
+> = PureUseCase<FindByIdInput<TRequester, TId>, TUseCaseOutput, TRequester>;

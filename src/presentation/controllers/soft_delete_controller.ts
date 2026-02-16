@@ -17,16 +17,22 @@ import type { SoftDeleteInput } from '../../application_boundary/use_cases/soft_
  * @template TTranslator The translator type
  */
 export abstract class SoftDeleteController<
-    TRequester extends Requester,
-    TId,
     TControllerResult,
+    TUseCaseInput extends SoftDeleteInput<TRequester, TId>,
+    TId,
     TTranslator extends Translator,
+    TRequester extends Requester = TUseCaseInput extends SoftDeleteInput<
+        infer R,
+        unknown
+    >
+        ? R
+        : never,
 > extends PureController<
     TControllerResult,
-    SoftDeleteUseCase<TRequester, TId>,
-    TRequester,
+    TUseCaseInput,
     void,
-    TTranslator
+    TTranslator,
+    TRequester
 > {
     constructor(
         protected readonly interactor: SoftDeleteUseCase<TRequester, TId>,
@@ -37,7 +43,7 @@ export abstract class SoftDeleteController<
 
     protected getUseCaseInput(
         request: PureRequest<TRequester>,
-    ): Result<SoftDeleteInput<TRequester, TId>> {
+    ): Result<TUseCaseInput> {
         const requester = request.getRequester();
         const id = this.extractId(request);
         if (id === undefined) {
@@ -49,7 +55,7 @@ export abstract class SoftDeleteController<
         return new Success({
             requester,
             id,
-        });
+        } as TUseCaseInput);
     }
 
     /**

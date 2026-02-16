@@ -29,19 +29,25 @@ export interface PaginationParams {
  * @template TTranslator The translator type
  */
 export abstract class FindAllController<
-    TRequester extends Requester,
-    TDto,
     TControllerResult,
+    TUseCaseInput extends FindAllInput<TRequester>,
+    TUseCaseOutput,
     TTranslator extends Translator,
+    TRequester extends Requester = TUseCaseInput extends FindAllInput<infer R>
+        ? R
+        : never,
 > extends PureController<
     TControllerResult,
-    FindAllUseCase<TRequester, TDto>,
-    TRequester,
-    PageResult<TDto>,
-    TTranslator
+    TUseCaseInput,
+    PageResult<TUseCaseOutput>,
+    TTranslator,
+    TRequester
 > {
     constructor(
-        protected readonly interactor: FindAllUseCase<TRequester, TDto>,
+        protected readonly interactor: FindAllUseCase<
+            TRequester,
+            TUseCaseOutput
+        >,
         protected readonly translator: TTranslator,
     ) {
         super(interactor, translator);
@@ -49,7 +55,7 @@ export abstract class FindAllController<
 
     protected getUseCaseInput(
         request: PureRequest<TRequester>,
-    ): Result<FindAllInput<TRequester>> {
+    ): Result<TUseCaseInput> {
         const requester = request.getRequester();
         const params = this.extractPaginationParams(request);
         return new Success({
@@ -59,15 +65,8 @@ export abstract class FindAllController<
             filter: params.filter,
             sort: params.sort,
             presets: params.presets,
-        });
+        } as TUseCaseInput);
     }
-
-    /**
-     * Extract pagination parameters from the request.
-     * Subclasses must implement this to extract pagination params from their specific request type.
-     * @param request The request object
-     * @returns The pagination parameters
-     */
     protected abstract extractPaginationParams(
         request: PureRequest<TRequester>,
     ): PaginationParams;

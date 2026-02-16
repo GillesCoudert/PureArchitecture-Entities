@@ -20,24 +20,32 @@ import type { CreateInput } from '../../application_boundary/use_cases/create/in
  * @template TTranslator The translator type
  */
 export abstract class CreateController<
-    TRequester extends Requester,
-    TForm,
-    TInputData,
-    TDto,
     TControllerResult,
+    TUseCaseInput extends CreateInput<TRequester, TInputData>,
+    TUseCaseOutput,
+    TForm,
     TTranslator extends Translator,
+    TRequester extends Requester = TUseCaseInput extends CreateInput<
+        infer R,
+        unknown
+    >
+        ? R
+        : never,
+    TInputData = TUseCaseInput extends CreateInput<TRequester, infer D>
+        ? D
+        : never,
 > extends PureController<
     TControllerResult,
-    CreateUseCase<TRequester, TInputData, TDto>,
-    TRequester,
-    TDto,
-    TTranslator
+    TUseCaseInput,
+    TUseCaseOutput,
+    TTranslator,
+    TRequester
 > {
     constructor(
         protected readonly interactor: CreateUseCase<
             TRequester,
             TInputData,
-            TDto
+            TUseCaseOutput
         >,
         protected readonly translator: TTranslator,
         protected readonly mapper: Mapper<TForm, TInputData>,
@@ -47,14 +55,14 @@ export abstract class CreateController<
 
     protected getUseCaseInput(
         request: PureRequest<TRequester>,
-    ): Result<CreateInput<TRequester, TInputData>> {
+    ): Result<TUseCaseInput> {
         const requester = request.getRequester();
         const form = this.extractFormData(request);
         const data = this.mapper.to(form);
         return new SuccessResult({
             requester,
             data,
-        });
+        } as TUseCaseInput);
     }
 
     /**
