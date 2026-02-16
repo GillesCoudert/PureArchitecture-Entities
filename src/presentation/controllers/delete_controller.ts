@@ -17,16 +17,22 @@ import type { DeleteInput } from '../../application_boundary/use_cases/delete/in
  * @template TTranslator The translator type
  */
 export abstract class DeleteController<
-    TRequester extends Requester,
-    TId,
     TControllerResult,
+    TUseCaseInput extends DeleteInput<TRequester, TId>,
+    TId,
     TTranslator extends Translator,
+    TRequester extends Requester = TUseCaseInput extends DeleteInput<
+        infer R,
+        unknown
+    >
+        ? R
+        : never,
 > extends PureController<
     TControllerResult,
-    DeleteUseCase<TRequester, TId>,
-    TRequester,
+    TUseCaseInput,
     void,
-    TTranslator
+    TTranslator,
+    TRequester
 > {
     constructor(
         protected readonly interactor: DeleteUseCase<TRequester, TId>,
@@ -37,7 +43,7 @@ export abstract class DeleteController<
 
     protected getUseCaseInput(
         request: PureRequest<TRequester>,
-    ): Result<DeleteInput<TRequester, TId>> {
+    ): Result<TUseCaseInput> {
         const requester = request.getRequester();
         const id = this.extractId(request);
         if (id === undefined) {
@@ -49,7 +55,7 @@ export abstract class DeleteController<
         return new Success({
             requester,
             id,
-        });
+        } as TUseCaseInput);
     }
 
     /**

@@ -21,25 +21,32 @@ import type { UpdateInput } from '../../application_boundary/use_cases/update/in
  * @template TTranslator The translator type
  */
 export abstract class UpdateController<
-    TRequester extends Requester,
+    TControllerResult,
+    TUseCaseInput extends UpdateInput<TRequester, TInputData, TId>,
     TForm,
     TInputData,
-    TDto,
     TId,
-    TControllerResult,
+    TUseCaseOutput,
     TTranslator extends Translator,
+    TRequester extends Requester = TUseCaseInput extends UpdateInput<
+        infer R,
+        unknown,
+        unknown
+    >
+        ? R
+        : never,
 > extends PureController<
     TControllerResult,
-    UpdateUseCase<TRequester, TInputData, TDto, TId>,
-    TRequester,
-    TDto,
-    TTranslator
+    TUseCaseInput,
+    TUseCaseOutput,
+    TTranslator,
+    TRequester
 > {
     constructor(
         protected readonly interactor: UpdateUseCase<
             TRequester,
             TInputData,
-            TDto,
+            TUseCaseOutput,
             TId
         >,
         protected readonly translator: TTranslator,
@@ -50,7 +57,7 @@ export abstract class UpdateController<
 
     protected getUseCaseInput(
         request: PureRequest<TRequester>,
-    ): Result<UpdateInput<TRequester, TInputData, TId>> {
+    ): Result<TUseCaseInput> {
         const requester = request.getRequester();
         const form = this.extractFormData(request);
         const id = this.extractId(request);
@@ -60,12 +67,11 @@ export abstract class UpdateController<
                 code: 'idNotProvided',
             });
         }
-        const data = this.mapper.to(form);
         return new Success({
             requester,
             id,
-            data,
-        });
+            data: this.mapper.to(form),
+        } as TUseCaseInput);
     }
 
     /**

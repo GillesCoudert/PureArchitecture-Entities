@@ -17,16 +17,22 @@ import type { RestoreInput } from '../../application_boundary/use_cases/restore/
  * @template TTranslator The translator type
  */
 export abstract class RestoreController<
-    TRequester extends Requester,
-    TId,
     TControllerResult,
+    TUseCaseInput extends RestoreInput<TRequester, TId>,
+    TId,
     TTranslator extends Translator,
+    TRequester extends Requester = TUseCaseInput extends RestoreInput<
+        infer R,
+        unknown
+    >
+        ? R
+        : never,
 > extends PureController<
     TControllerResult,
-    RestoreUseCase<TRequester, TId>,
-    TRequester,
+    TUseCaseInput,
     void,
-    TTranslator
+    TTranslator,
+    TRequester
 > {
     constructor(
         protected readonly interactor: RestoreUseCase<TRequester, TId>,
@@ -37,7 +43,7 @@ export abstract class RestoreController<
 
     protected getUseCaseInput(
         request: PureRequest<TRequester>,
-    ): Result<RestoreInput<TRequester, TId>> {
+    ): Result<TUseCaseInput> {
         const requester = request.getRequester();
         const id = this.extractId(request);
         if (id === undefined) {
@@ -49,7 +55,7 @@ export abstract class RestoreController<
         return new Success({
             requester,
             id,
-        });
+        } as TUseCaseInput);
     }
 
     /**

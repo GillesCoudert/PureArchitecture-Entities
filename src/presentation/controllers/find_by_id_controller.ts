@@ -18,20 +18,30 @@ import type { FindByIdInput } from '../../application_boundary/use_cases/find_by
  * @template TTranslator The translator type
  */
 export abstract class FindByIdController<
-    TRequester extends Requester,
-    TDto,
-    TId,
     TControllerResult,
+    TUseCaseInput extends FindByIdInput<TRequester, TId>,
+    TUseCaseOutput,
+    TId,
     TTranslator extends Translator,
+    TRequester extends Requester = TUseCaseInput extends FindByIdInput<
+        infer R,
+        unknown
+    >
+        ? R
+        : never,
 > extends PureController<
     TControllerResult,
-    FindByIdUseCase<TRequester, TDto, TId>,
-    TRequester,
-    TDto,
-    TTranslator
+    TUseCaseInput,
+    TUseCaseOutput,
+    TTranslator,
+    TRequester
 > {
     constructor(
-        protected readonly interactor: FindByIdUseCase<TRequester, TDto, TId>,
+        protected readonly interactor: FindByIdUseCase<
+            TRequester,
+            TUseCaseOutput,
+            TId
+        >,
         protected readonly translator: TTranslator,
     ) {
         super(interactor, translator);
@@ -39,7 +49,7 @@ export abstract class FindByIdController<
 
     protected getUseCaseInput(
         request: PureRequest<TRequester>,
-    ): Result<FindByIdInput<TRequester, TId>> {
+    ): Result<TUseCaseInput> {
         const requester = request.getRequester();
         const id = this.extractId(request);
         if (id === undefined) {
@@ -51,7 +61,7 @@ export abstract class FindByIdController<
         return new Success({
             requester,
             id,
-        });
+        } as TUseCaseInput);
     }
 
     /**

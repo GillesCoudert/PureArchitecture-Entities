@@ -3,7 +3,6 @@ import type {
     PureUseCase,
     Requester,
 } from '@gilles-coudert/pure-architecture';
-import type { ResultAsync } from '@gilles-coudert/pure-trace';
 import type { FindAllInput } from './input';
 
 /**
@@ -11,16 +10,13 @@ import type { FindAllInput } from './input';
  * Exposed to the presentation layer without TEntity.
  *
  * @template TRequester - The requester/actor type for access control
- * @template TDto - The data transfer object type
+ * @template TUseCaseOutputData - The data type for the use case output
  */
-export interface FindAllUseCase<
+export type FindAllUseCase<
     TRequester extends Requester,
-    TDto,
-> extends PureUseCase<TRequester, PageResult<TDto>> {
-    /**
-     * Execute the use case: find all entities and return them as DTOs.
-     * @param input - Query parameters containing requester
-     * @returns Array of entities as DTOs
-     */
-    execute(input: FindAllInput<TRequester>): ResultAsync<PageResult<TDto>>;
-}
+    TUseCaseOutputData,
+> = PureUseCase<
+    FindAllInput<TRequester>,
+    PageResult<TUseCaseOutputData>,
+    TRequester
+>;
