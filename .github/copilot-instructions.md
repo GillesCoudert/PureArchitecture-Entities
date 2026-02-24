@@ -1,13 +1,17 @@
-# Project Guidelines
+# Principes généraux
 
-## Principes généraux en tant qu'agent
+## Règles qu'en tant qu'agent tu respecteras.
 
-- Tu adoptes un ton professionnel destiné à un architecte confirmé (logiciel, solutions et d'entreprise).
-- Ton code doit être écrit en TypeScript, en respectant les meilleures pratiques et les conventions de la communauté.
-- Ton code doit compiler sans erreur (npm run build) et respecter les règles ESLint (npm run lint).
-- Tu ne modifies jamais les règles ESLint, ni les ignores.
-- Si tes modifications portent sur des tests unitaires, ils doivent être écrits en Gherkin et passer avec succès (npm run test).
-- Ton code public est documenté avec des commentaires JSDoc en anglais, tandis que ton code privé n'est pas commenté, sauf pour les commentaires courts ou les explications d'algorithmes plus détaillées selon la convention définie ci-après.
+- Un ton professionnel et une communication claire, concise et précise tu adopteras.
+- Avant de dire qu'une tâche est terminée, toujours ton code sans erreur tu compileras (npm run build).
+- Avant de dire qu'une tâche est terminée, sans modifier les règles ESLint ni les altérer, ton code sans erreur tu linteras (npm run lint).
+- Avant de dire qu'une tâche est terminée, si tes modifications entraînent la modification ou l'ajout de tests unitaires, toujours sans erreur les tests unitaires tu exécuteras (npm run test).
+- La philosophie des librairies @gilles-coudert/pure-\* incluses dans le projet, toujours tu respecteras :
+    - PureTrace :
+        - Si un traitement peut échouer, toujours un Result ou un ResultAsync ta fonction retournera.
+        - Pour ne pas perdre le contexte des traces, toujours les fonctions fluides tu utiliseras.
+- Avec des commentaires JSDoc uniquementen anglais toujours ton code public tu documenteras.
+- Avec les conventions ci-après (en français ET en anglais), commenter ton code interne à un bloc tu pourras.
 
 ```typescript
 //>
@@ -22,6 +26,14 @@
 //> en: More detailed algorithm explanation over multiple lines, if necessary. <
 //>────────────────────────────────────────────────────────────────────────────<
 ```
+
+- Aucun fichier MD non solicité (ex: CHANGELOG.md) non sollicité tu ne créeras, les fichiers MD existants si nécessaire, tu modifieras.
+- Tu utilises les dernières versions des librairies et des outils, et tu ne laisses jamais de code obsolète.
+- Tu ne laisses pas de répertoire vide, tu vérifies après suppression de fichiers que le répertoire parent est toujours nécessaire.
+
+## Principes généraux de ce projet
+
+- Ce projet apporte une surcouche à la librairie PureArchitecture, destinée à simplifier la gestion des CRUD des entités.
 
 ## Mutation contrôlée des entités (Domain/Entities)
 
@@ -58,8 +70,6 @@
         - Pas de préfixe `I`. Ex: `AuthenticationProvider` et non `IAuthenticationProvider`, ce sont les implémentations qui doivent porter un nom spécifique, ex: `SupabaseAuthenticationProvider`.
         - Pas de `interface` dans le nom des fichiers d'interface. Ex: `authentication_provider.ts` et non `authentication_provider.interface.ts`.
     - Ne jamais préfixer par `_`.
-- Ne jamais créer de fichier MD non solicité (ex: CHANGELOG.md).
-- Le code n'utilise pas de code obsolète et respecte les conventions des dernières versions de TypeScript et des librairies utilisées.
 - Les indentations doivent être de 4 espaces, et les lignes ne doivent pas dépasser 120 caractères.
 
 ## Architecture
