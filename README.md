@@ -1,207 +1,26 @@
-# PureArchitecture-Entities
+# PureXxx
 
-A TypeScript library providing entity interfaces for Pure Architecture domain modeling.
+TODO: Add badges
 
-[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
-[![npm version](https://badge.fury.io/js/%40gilles-coudert%2Fpure-architecture-entities.svg)](https://www.npmjs.com/package/@gilles-coudert/pure-architecture-entities)
+> TODO: Short description of PureXxx
 
-## Overview
+## Why PureXxx ?
 
-This library provides TypeScript interfaces for building domain entities in Pure Architecture applications. It includes three core entity types that handle common lifecycle patterns:
+TODO: Explain the motivation for PureXxx
 
-- **ImmutableEntity**: Base entities that cannot be modified after creation
-- **UpdatableEntity**: Entities that can be updated after creation
-- **SoftRemovableEntity**: Entities supporting soft deletion
+## PureXxx in the PureFramework
 
-All entities support custom identifier types.
-
-## Installation
-
-```bash
-npm install @gilles-coudert/pure-architecture-entities
-```
+TODO: Mermaid diagram showing the location and dependencies of this library in the PureFramework ecosystem.
 
 ## Quick Start
 
-```typescript
-import {
-    ImmutableEntity,
-    UpdatableEntity,
-    SoftRemovableEntity,
-} from '@gilles-coudert/pure-architecture-entities';
+TODO: Installation and ultra-simple example following best practices.
 
-// Define an immutable entity
-interface User extends ImmutableEntity<string> {
-    email: string;
-    username: string;
-}
+## Advanced documentation
 
-// Define an updatable entity
-interface Article extends UpdatableEntity<string> {
-    title: string;
-    content: string;
-}
-
-// Define a soft-removable entity
-interface Post extends SoftRemovableEntity<number> {
-    title: string;
-    body: string;
-}
-```
-
-## API Reference
-
-### ImmutableEntity
-
-Base interface for entities that cannot be modified after creation.
-
-```typescript
-interface ImmutableEntity<TId = string> {
-    id: TId;
-    createdAt: Date;
-}
-```
-
-**Type Parameters:**
-
-- `TId`: The type of the entity identifier (defaults to `string`)
-
-**Properties:**
-
-- `id`: Unique identifier for the entity
-- `createdAt`: Timestamp when the entity was created
-
-### UpdatableEntity
-
-Interface for entities that can be updated after creation. Extends `ImmutableEntity`.
-
-```typescript
-interface UpdatableEntity<TId = string> extends ImmutableEntity<TId> {
-    updatedAt: Date;
-}
-```
-
-**Additional Properties:**
-
-- `updatedAt`: Timestamp of the last update to the entity
-
-### SoftRemovableEntity
-
-Interface for entities that support soft deletion. Extends `ImmutableEntity`.
-
-```typescript
-interface SoftRemovableEntity<TId = string> extends ImmutableEntity<TId> {
-    removedAt: Date;
-}
-```
-
-**Additional Properties:**
-
-- `removedAt`: Timestamp when the entity was soft deleted
-
-## Usage Examples
-
-### Basic Entity Definition
-
-```typescript
-import { ImmutableEntity } from '@gilles-coudert/pure-architecture-entities';
-
-interface Product extends ImmutableEntity {
-    name: string;
-    price: number;
-    sku: string;
-}
-
-const product: Product = {
-    id: 'prod-123',
-    createdAt: new Date(),
-    accessPolicy: undefined,
-    name: 'Widget',
-    price: 29.99,
-    sku: 'WID-001',
-};
-```
-
-### Entity with Custom ID Type
-
-```tname: 'Widget',
-    price: 29.99,
-    sku: 'WID-001',
-};
-```
-
-### Entity with Custom ID Type
-
-```typescript
-import { UpdatableEntity } from '@gilles-coudert/pure-architecture-entities';
-
-interface Order extends UpdatableEntity<number> {
-    customerId: number;
-    items: OrderItem[];
-    total: number;
-}
-
-const order: Order = {
-    id: 12345,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    customerId: 67890,
-    items: [],
-    total: 0,
-};
-```
-
-### Soft-Removable Entity
-
-````typescript
-import { SoftRemovableEntity } from '@gilles-coudert/pure-architecture-entities';
-
-interface Document extends SoftRemovableEntity<string> {
-    title: string;
-    content: string;
-}
-
-const document: Document = {
-    id: 'doc-456',
-    createdAt: new Date(),
-    removedAt: new Date()
-- Node.js 24 or higher
-- npm or yarn
-
-### Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/GillesCoudert/PureArchitecture-Entities.git
-cd PureArchitecture-Entities
-
-# Install dependencies
-npm install
-
-# Build the project
-npm run build
-````
-
-### Scripts
-
-- `npm run build` - Compile TypeScript to JavaScript
-- `npm run test` - Run tests with Jest
-- `npm run lint` - Lint code with ESLint
-
-### Lint Configuration
-
-This project uses a comprehensive ESLint configuration tailored for Pure Architecture projects:
-
-- **Strict TypeScript**: Enforces explicit return types and prevents use of `any`
-- **Naming Conventions**: Enforces PascalCase for interfaces, types, and classes
-- **Code Quality**: Limits complexity, file size, and function parameters
-- **Best Practices**: Enforces modern JavaScript/TypeScript patterns
-
-Run linting with:
-
-```bash
-npm run lint
-```
+- [API Reference](docs/api.md) - Complete API documentation
+- [Best Practices](docs/best_practices.md) - Development guide for humans and AI agents
+- [Examples](docs/examples.md) - Practical examples following best practices
 
 ## Contributing
 
@@ -224,22 +43,15 @@ Commits should stay frequent, descriptive, and free of artificial prefixes that 
 
 ## License
 
-This project is licensed under the Mozilla Public License 2.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **Mozilla Public License 2.0 (MPL-2.0)**.
 
 ## Author
 
 **Gilles Coudert**
 
-- Email: pure.framework@gmail.com
-- GitHub: [@GillesCoudert](https://github.com/GillesCoudert)
+- Email: [pure.framework@gmail.com](mailto:pure.framework@gmail.com)
+- GitHub: [https://github.com/GillesCoudert](https://github.com/GillesCoudert)
 
-## Related Projects
+## Links
 
-- [@gilles-coudert/pure-architecture](https://github.com/GillesCoudert/PureArchitecture) - Core Pure Architecture framework
-
-## Support
-
-For issues and questions:
-
-- GitHub Issues: [PureArchitecture-Entities/issues](https://github.com/GillesCoudert/PureArchitecture-Entities/issues)
-- Email: pure.framework@gmail.com
+TODO: Add links to others PureFramework libraries used.
